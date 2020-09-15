@@ -156,6 +156,12 @@ d3.json(queryURL, (movieData => {
     chart.dataFields.toName = "to";
     chart.dataFields.value = "value";
 
+    let link = chart.links.template;
+    link.fillOpacity = 0.8;
+
+    let label = chart.nodes.template.label;
+    label.fontSize = 11;
+    
     // make nodes draggable
     var nodeTemplate = chart.nodes.template;
     nodeTemplate.readerTitle = "Click to show/hide or drag to rearrange";
@@ -235,10 +241,10 @@ d3.json("/api/v1.0/movies", function(data) {
         //Check for location
         if(movie.lat && movie.lng){
             const marker = L.marker([movie.lat, movie.lng])
-            .bindPopup("<h3>" + movie.title + 
-            "</h3><hr><p> Year Produced: " + movie.year_pub +
+            .bindPopup("<h5><strong>" + movie.title + 
+            "</strong></h5><hr><p> Year Produced: " + movie.year_pub +
             "</p><hr><p> Company: " + movie.company + 
-            "</p><hr><a href="+"https://www.imdb.com/title/" + movie.movie_id +"/></a>");
+            `</p><hr><a href="https://www.imdb.com/title/${movie.movie_id}" target=_blank>Movie on IMDB site</a>`);
             markers.addLayer(marker);
         }
     });
@@ -263,10 +269,10 @@ function optionChanged(chosen){
             //Check for location
             if(movie.lat && movie.lng){
                 const marker = L.marker([movie.lat, movie.lng])
-                .bindPopup("<h3>" + movie.title + 
-                "</h3><hr><p> Year Produced: " + movie.year_pub +
+                .bindPopup("<h5><strong>" + movie.title + 
+                "</strong></h5><hr><p> Year Produced: " + movie.year_pub +
                 "</p><hr><p> Company: " + movie.company + 
-                "</p><hr><a href="+"https://www.imdb.com/title/" + movie.movie_id +"/></a>");
+                `</p><hr><a href="https://www.imdb.com/title/${movie.movie_id}" target=_blank>Movie on IMDB site</a>`);
                 markers.addLayer(marker);
             }
         });
