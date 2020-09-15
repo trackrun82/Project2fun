@@ -6,8 +6,6 @@ from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func
 
 from flask import Flask, jsonify, render_template
-import boto
-conn = boto.connect_s3()
 
 # from flask_sqlalchemy import SQLAlchemy
 
