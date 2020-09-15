@@ -48,7 +48,7 @@ def welcome():
         
 @app.route("/api/v1.0/movies")
 def movie_info():
-    movie_info = session.query(Movie.movie_title, Movie.year_published,\
+    movie_info = session.query(Movie.movie_id, Movie.movie_title, Movie.year_published,\
                                Movie.movie_duration, Movie.budget, Movie.usa_gross_income,\
                                Movie.worlwide_gross_income,\
                                country.country_name, country.lat, country.long, Movie.votes_avg,\
@@ -61,8 +61,9 @@ def movie_info():
     session.close()
     #Create list of movie information
     movie_list = []
-    for title, year, duration, budget, us, worldwide, country_name, lat, lng, avg_votes, company in movie_info:
+    for id, title, year, duration, budget, us, worldwide, country_name, lat, lng, avg_votes, company in movie_info:
         movie_dict = {}
+        movie_dict['id'] = id
         movie_dict['title'] = title
         movie_dict['year_pub'] = year
         movie_dict['duration'] = duration
@@ -94,7 +95,7 @@ def genre_names():
 
 @app.route("/api/v1.0/genres")
 def genre_info():
-    genre_info = session.query(Movie.movie_title, Movie.year_published,\
+    genre_info = session.query(Movie.movie_id, Movie.movie_title, Movie.year_published,\
                                Movie.movie_duration, Movie.budget, Movie.usa_gross_income,\
                                Movie.worlwide_gross_income,\
                                country.country_name, country.lat, country.long, Movie.votes_avg,\
@@ -110,8 +111,9 @@ def genre_info():
     session.close()
     #Create list of movie information
     genre_list = []
-    for title, year, duration, budget, us, worldwide, country_name, lat, lng, avg_votes, genre, company in genre_info:
+    for id, title, year, duration, budget, us, worldwide, country_name, lat, lng, avg_votes, genre, company in genre_info:
         genre_dict = {}
+        genre_dict['id'] = id
         genre_dict['title'] = title
         genre_dict['year_pub'] = year
         genre_dict['duration'] = duration

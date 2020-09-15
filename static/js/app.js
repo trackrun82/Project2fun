@@ -266,7 +266,7 @@ function optionChanged(chosen){
                 .bindPopup("<h3>" + movie.title + 
                 "</h3><hr><p> Year Produced: " + movie.year_pub +
                 "</p><hr><p> Company: " + movie.company + 
-                "</p><hr><p> Avg Votes: " + movie.avg_votes + "</p>");
+                "</p><hr><a href=https://www.imdb.com/title/" + movie.id +"></a>");
                 markers.addLayer(marker);
             }
         });
