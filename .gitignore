@@ -136,5 +136,5 @@ dmypy.json
 secret.py
 
 # API key
-static/js/config.js
-config.js
+# static/js/config.js
+# config.js
