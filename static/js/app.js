@@ -236,9 +236,9 @@ d3.json("/api/v1.0/movies", function(data) {
         if(movie.lat && movie.lng){
             const marker = L.marker([movie.lat, movie.lng])
             .bindPopup("<h3>" + movie.title + 
-            "</h3><hr><p> Year Produced: " + movie.year +
+            "</h3><hr><p> Year Produced: " + movie.year_pub +
             "</p><hr><p> Company: " + movie.company + 
-            "</p><hr><p> Avg Votes: " + movie.avg_votes + "</p>");
+            "</p><hr><a href=https://www.imdb.com/title/" + movie.id +"></a>");
             markers.addLayer(marker);
         }
     });
@@ -264,7 +264,7 @@ function optionChanged(chosen){
             if(movie.lat && movie.lng){
                 const marker = L.marker([movie.lat, movie.lng])
                 .bindPopup("<h3>" + movie.title + 
-                "</h3><hr><p> Year Produced: " + movie.year +
+                "</h3><hr><p> Year Produced: " + movie.year_pub +
                 "</p><hr><p> Company: " + movie.company + 
                 "</p><hr><p> Avg Votes: " + movie.avg_votes + "</p>");
                 markers.addLayer(marker);
