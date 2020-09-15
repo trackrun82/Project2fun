@@ -7,6 +7,8 @@ from sqlalchemy import create_engine, func
 
 from flask import Flask, jsonify, render_template
 
+# from flask_sqlalchemy import SQLAlchemy
+
 #################################################
 # Database Setup
 #################################################
@@ -153,6 +155,64 @@ def profit_array():
         profit_list.append(row_profit)
 
     return jsonify(profit_list)
+
+
+@app.route("/api/v1.0/movies02")
+def profit_movies():  
+    # Query the Heroku Postgres Database to DataFrame and JOIN appropriate tables
+    query1 = session.query(mgjunct.movie_id, Genre.genre_name, Profit.budget, Profit.revenue, Profit.profit,\
+                          Movie.usa_gross_income, Movie.worlwide_gross_income, Movie.movie_title, Movie.year_published,\
+                          Movie.movie_duration, Movie.votes_avg, country.country_name, country.lat,\
+                          country.long, companyname.company_name)
+    query2 = query1.join(Profit, mgjunct.movie_id == Profit.movie_id)
+    query3 = query2.join(Genre, mgjunct.genre_id == Genre.genre_id)
+    query4 = query3.join(Movie, mgjunct.movie_id == Movie.movie_id)
+    query5 = query4.join(countryjunct, Movie.movie_id == countryjunct.movie_id)
+    query6 = query5.join(country, countryjunct.country_id == country.country_id)
+    query_stmt = query6.join(companyname, Movie.company_id == companyname.company_id).statement
+    profit_movies_df = pd.read_sql_query(query_stmt, session.bind)
+
+    # Iterate through the profit_genre_df to create a list of dictionaries (array of objects) for each row
+    profit_movies_list = []
+    
+    for index, row in profit_movies_df.iterrows():
+
+        # Profit dict
+        movie_id = row["movie_id"]
+        movie_title = row["movie_title"]
+        year_published = row["year_published"]
+        movie_duration = row["movie_duration"]
+        budget = row["budget"]
+        usa_gross_income = row["usa_gross_income"]
+        worlwide_gross_income = row["worlwide_gross_income"]
+        country_name = row["country_name"]
+        lat = row["lat"]
+        lng = row["long"]
+        votes_avg = row["votes_avg"]
+        genre_name = row["genre_name"]
+        revenue = row["revenue"]
+        profit = row["profit"]
+        country_name = row["country_name"]
+
+        row_profit_movies = {"movie_id": movie_id,
+                             "title": movie_title,
+                             "year_pub": year_published,
+                             "duration": movie_duration,
+                             "us_gross": usa_gross_income,
+                             "ww_gross": worlwide_gross_income,
+                             "country": country_name,
+                             "lat": lat,
+                             "lng": lng,
+                             "avg_votes": votes_avg,
+                             "company": country_name,
+                            "genre_name": genre_name,
+                            "budget": budget,
+                            "revenue": revenue,
+                            "profit": profit
+                 }
+        profit_movies_list.append(row_profit_movies)
+      
+    return jsonify(profit_movies_list)
 
 
 @app.route("/api/v1.0/genre02")
