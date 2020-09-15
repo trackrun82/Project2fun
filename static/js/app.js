@@ -238,7 +238,7 @@ d3.json("/api/v1.0/movies", function(data) {
             .bindPopup("<h3>" + movie.title + 
             "</h3><hr><p> Year Produced: " + movie.year_pub +
             "</p><hr><p> Company: " + movie.company + 
-            "</p><hr><a href=https://www.imdb.com/title/" + movie.id +"></a>");
+            "</p><hr><a href="+"https://www.imdb.com/title/" + movie.movie_id +"/></a>");
             markers.addLayer(marker);
         }
     });
@@ -266,7 +266,7 @@ function optionChanged(chosen){
                 .bindPopup("<h3>" + movie.title + 
                 "</h3><hr><p> Year Produced: " + movie.year_pub +
                 "</p><hr><p> Company: " + movie.company + 
-                "</p><hr><a href=https://www.imdb.com/title/" + movie.id +"></a>");
+                "</p><hr><a href="+"https://www.imdb.com/title/" + movie.movie_id +"/></a>");
                 markers.addLayer(marker);
             }
         });

@@ -61,9 +61,9 @@ def movie_info():
     session.close()
     #Create list of movie information
     movie_list = []
-    for id, title, year, duration, budget, us, worldwide, country_name, lat, lng, avg_votes, company in movie_info:
+    for movie_id, title, year, duration, budget, us, worldwide, country_name, lat, lng, avg_votes, company in movie_info:
         movie_dict = {}
-        movie_dict['id'] = id
+        movie_dict['movie_id'] = movie_id
         movie_dict['title'] = title
         movie_dict['year_pub'] = year
         movie_dict['duration'] = duration
@@ -111,9 +111,9 @@ def genre_info():
     session.close()
     #Create list of movie information
     genre_list = []
-    for id, title, year, duration, budget, us, worldwide, country_name, lat, lng, avg_votes, genre, company in genre_info:
+    for movie_id, title, year, duration, budget, us, worldwide, country_name, lat, lng, avg_votes, genre, company in genre_info:
         genre_dict = {}
-        genre_dict['id'] = id
+        genre_dict['movie_id'] = movie_id
         genre_dict['title'] = title
         genre_dict['year_pub'] = year
         genre_dict['duration'] = duration
