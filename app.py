@@ -7,8 +7,6 @@ from sqlalchemy import create_engine, func
 
 from flask import Flask, jsonify, render_template
 
-# from flask_sqlalchemy import SQLAlchemy
-
 #################################################
 # Database Setup
 #################################################
@@ -107,7 +105,7 @@ def genre_info():
                                Movie.movie_id == mgjunct.movie_id).filter(\
                                mgjunct.genre_id == Genre.genre_id).filter(\
                                countryjunct.country_id == country.country_id).\
-                               all()
+                               order_by(Movie.year_published).all()
 
     session.close()
     #Create list of movie information
@@ -139,7 +137,7 @@ def profit_array():
     # Iterate through the profit_tb_df to create a list of dictionaries (array of objects) for each row
     profit_list = []
 
-    for index, row in profit_df.iterrows():
+    for row in profit_df.iterrows():
 
         # Profit dict
         movie_id = row["movie_id"]
@@ -175,7 +173,7 @@ def profit_movies():
     # Iterate through the profit_genre_df to create a list of dictionaries (array of objects) for each row
     profit_movies_list = []
     
-    for index, row in profit_movies_df.iterrows():
+    for row in profit_movies_df.iterrows():
 
         # Profit dict
         movie_id = row["movie_id"]
@@ -226,7 +224,7 @@ def profit_genre():
     # Iterate through the profit_genre_df to create a list of dictionaries (array of objects) for each row
     profit_genre_list = []
     
-    for index, row in profit_genre_df.iterrows():
+    for row in profit_genre_df.iterrows():
 
         # Profit dict
         movie_id = row["movie_id"]
