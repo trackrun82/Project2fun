@@ -11,14 +11,13 @@ d3.json("/api/v1.0/genre_names", function(data) {
     });
 });
 
-s3 = S3Connection(os.environ['S3_KEY'], os.environ['S3_SECRET'])
 // Code for creating map
 // Create the dark tile layer that will be the background of our map
 const darkmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
     attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
     maxZoom: 18,
     id: "dark-v10",
-    accessToken: S3_SECRET
+    accessToken: API_KEY
 });
 
 // Create the light tile layer
@@ -26,7 +25,7 @@ const lightmap = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     maxZoom: 18,
     id: 'mapbox/light-v10',
-    accessToken: S3_SECRET
+    accessToken: API_KEY
 });
 
 // Initialize all of the LayerGroups we'll be using
