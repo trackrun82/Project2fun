@@ -147,8 +147,7 @@ def genre_line_info():
 
 @app.route("/api/v1.0/genre_chord")
 def genre_chord_info():
-    genre_chord_info = session.query(Movie.movie_title, Movie.year_published,\
-                               country.country_name, country.lat, country.long, Movie.votes_avg,\
+    genre_chord_info = session.query(Movie.movie_title,\
                                Genre.genre_name,\
                                companyname.company_name).filter(\
                                Movie.movie_id == countryjunct.movie_id).filter(\
@@ -156,19 +155,14 @@ def genre_chord_info():
                                Movie.movie_id == mgjunct.movie_id).filter(\
                                mgjunct.genre_id == Genre.genre_id).filter(\
                                countryjunct.country_id == country.country_id).\
-                               order_by(Movie.year_published).all()
+                               all()
 
     session.close()
     #Create list of movie information
     genre_chord_list = []
-    for title, year, country_name, lat, lng, avg_votes, genre, company in genre_chord_info:
+    for title, genre, company in genre_chord_info:
         genre_chord_dict = {}
         genre_chord_dict['title'] = title
-        genre_chord_dict['year_pub'] = year
-        genre_chord_dict['country'] = country_name
-        genre_chord_dict['lat'] = lat
-        genre_chord_dict['lng'] = lng
-        genre_chord_dict['avg_votes'] = avg_votes
         genre_chord_dict['genre'] = genre
         genre_chord_dict['company'] = company
         genre_chord_list.append(genre_chord_dict)
