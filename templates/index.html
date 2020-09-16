@@ -6,15 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="shortcut icon" href="#">
+    <title>Movies</title>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    
-    <!-- Latest compiled and minified CSS -->
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
-    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous"> -->
-
-    <title>Movies</title>
 
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
@@ -27,11 +22,9 @@
 
     <!-- Our CSS -->
     <link rel="stylesheet" href="../static/css/style.css">
+    
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-     <!-- Latest compiled JavaScript -->
-    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
-
 
   </head>
 
@@ -40,7 +33,24 @@
       <div class="row">
         <div class="col col-md-12 jumbotron text-center bg-dark">
           <h1 class="" style="font-size:6vw;"><span class="text-warning font-weight-bold">Movie </span><span class="text-white font-weight-bold">Dashboard</span></h1>
-          <p class="lead text-white font-weight-bold">Use the interactive charts below to explore the dataset</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3 text-center">
+          <h4>Choose a genre:</h4>
+          <select id="selGenre" onchange="optionChanged(this.value)">
+            <option hidden disabled selected value> -- select an option -- </option>
+          </select>
+          <p></p>
+        </div>
+        <div class="col-md-9">
+          <p></p>
+          <h3>Movies by Production Company Country Base</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div id="map"></div>
         </div>
       </div>
       <div class="row">
@@ -49,24 +59,6 @@
         </div>
         <div class="col-md-6">
           <div id="chartdiv"></div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-4">
-          <div class="well">
-            <h4>Choose a genre:</h4>
-            <select id="selGenre" onchange="optionChanged(this.value)">
-              <option hidden disabled selected value> -- select an option -- </option>
-            </select>
-          </div>
-        </div>
-        <!-- <div class="col-md-8">
-          <div id="scatter"></div>
-        </div> -->
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <div id="map"></div>
         </div>
       </div>
 
@@ -151,20 +143,17 @@
       <footer class="bg-dark mt-2">
         <div class="container">
           <div class="row">
-            <div class="col text-center">
-              <h1 class="text-warning lead font-weight-bold">Elizabeth Emborsky, Aaron Paul Lewis, Michael Bradberry</h1>
-              <h1 class="text-warning lead font-weight-bold">Data Analytics and Visualization Bootcamp</h1>
-              <h1 class="text-warning lead font-weight-bold">Rice University</h1>
-              <h1 class="text-warning lead font-weight-bold">Team Movies</h1>
+            <div class="col-md-9 text-left">
+              <h2 class="text-warning lead font-weight-bold">Made by: Beth Emborsky, Aaron Paul Lewis, Michael Bradberry</h2>
+            </div>
+            <div class="col-md-3 text-right">
+              <a href="https://github.com/mbradbe06/Project2-Movie_Database" target=_blank>Github Site</a>
             </div>
           </div>
         </div>
-    
       </footer>
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    
     <!-- Plotly JS -->
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     
@@ -193,10 +182,9 @@
     <!-- Our JS -->
     <script src='../static/js/app.js'></script>
 
-    
-    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> -->
-    
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script> -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
   </body>
 </html>
