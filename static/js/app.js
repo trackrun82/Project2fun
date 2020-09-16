@@ -156,12 +156,6 @@ d3.json(queryURL, (movieData => {
     chart.dataFields.toName = "to";
     chart.dataFields.value = "value";
 
-    let link = chart.links.template;
-    link.fillOpacity = 0.8;
-
-    let label = chart.nodes.template.label;
-    label.fontSize = 11;
-    
     // make nodes draggable
     var nodeTemplate = chart.nodes.template;
     nodeTemplate.readerTitle = "Click to show/hide or drag to rearrange";
