@@ -26,15 +26,18 @@
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
+    <!-- Navigation Toolbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <a class="navbar-brand" href="https://trackrun82-movies.herokuapp.com/">
+        <h1 class="" style="font-size:3vw;"><span class="text-warning font-weight-bold">Movie </span><span class="text-white font-weight-bold">Dashboard</span></h1></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </nav>
   </head>
 
   <body>
     <div class="container-fluid bg-info">
-      <div class="row">
-        <div class="col col-md-12 jumbotron text-center bg-dark">
-          <h1 class="" style="font-size:6vw;"><span class="text-warning font-weight-bold">Movie </span><span class="text-white font-weight-bold">Dashboard</span></h1>
-        </div>
-      </div>
       <div class="row">
         <div class="col-md-3 text-center">
           <h4>Choose a genre:</h4>
@@ -140,18 +143,12 @@
 
       <!-- End the 5 most profitable movies -->
 
-      <footer class="bg-dark mt-2">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-9 text-left">
-              <h2 class="text-warning lead font-weight-bold">Made by: Beth Emborsky, Aaron Paul Lewis, Michael Bradberry</h2>
-            </div>
-            <div class="col-md-3 text-right">
-              <a href="https://github.com/mbradbe06/Project2-Movie_Database" target=_blank>Github Site</a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <nav class="navbar fixed-bottom navbar-dark bg-dark">
+        <span class="navbar-text text-warning lead font-weight-bold">
+          Made by: Beth Emborsky, Aaron Paul Lewis, Michael Bradberry
+        </span>
+        <a class="navbar-brand" href="https://github.com/mbradbe06/Project2-Movie_Database" target=_blank>Github Site</a>
+      </nav>
     </div>
     
     <!-- Plotly JS -->
