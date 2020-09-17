@@ -46,6 +46,18 @@ app = Flask(__name__)
 def welcome():
     return render_template('index.html')
         
+@app.route("/api/v1.0")
+def show_apis():
+    """List all available api routes."""
+    return (
+        f"<h4>Available Routes:</h4>"
+        f'<a href="/api/v1.0/movies">/api/v1.0/movies</a><br/>'       
+        f'<a href="/api/v1.0/genre_names">/api/v1.0/genre_names</a><br/>' 
+        f'<a href="/api/v1.0/genre_map">/api/v1.0/genre_map</a><br/>' 
+        f'<a href="/api/v1.0/genre_charts">/api/v1.0/genre_charts</a><br/>'
+        f'<a href="/"><h4>Back</h4></a><br/>' 
+    )   
+
 @app.route("/api/v1.0/movies")
 def movie_info():
     movie_info = session.query(Movie.movie_id, Movie.movie_title, Movie.year_published,\
@@ -115,59 +127,28 @@ def genre_map_info():
 
     return jsonify(genre_map_list)
 
-@app.route("/api/v1.0/genre_line")
-def genre_line_info():
-    genre_line_info = session.query(Movie.year_published,\
-                               Movie.budget, Movie.usa_gross_income,\
+@app.route("/api/v1.0/genre_charts")
+def genre_chart_info():
+    genre_chart_info = session.query(Movie.movie_title,\
+                               Movie.year_published,\
                                Movie.worlwide_gross_income,\
-                               Genre.genre_name,\
-                               companyname.company_name).filter(\
-                               Movie.movie_id == countryjunct.movie_id).filter(\
-                               Movie.company_id == companyname.company_id).filter(\
+                               Genre.genre_name).filter(\
                                Movie.movie_id == mgjunct.movie_id).filter(\
-                               mgjunct.genre_id == Genre.genre_id).filter(\
-                               countryjunct.country_id == country.country_id).\
+                               mgjunct.genre_id == Genre.genre_id).\
                                order_by(Movie.year_published).all()
 
     session.close()
     #Create list of movie information
-    genre_line_list = []
-    for year, budget, us, worldwide, genre, company in genre_line_info:
-        genre_line_dict = {}
-        genre_line_dict['year_pub'] = year
-        genre_line_dict['budget'] = budget
-        genre_line_dict['us_gross'] = us
-        genre_line_dict['ww_gross'] = worldwide 
-        genre_line_dict['genre'] = genre
-        genre_line_dict['company'] = company
-        genre_line_list.append(genre_line_dict)
+    genre_chart_list = []
+    for title, year, worldwide, genre in genre_chart_info:
+        genre_chart_dict = {}
+        genre_chart_dict['title'] = title
+        genre_chart_dict['year_pub'] = year
+        genre_chart_dict['ww_gross'] = worldwide 
+        genre_chart_dict['genre'] = genre
+        genre_chart_list.append(genre_chart_dict)
 
-    return jsonify(genre_line_list)
-
-
-@app.route("/api/v1.0/genre_chord")
-def genre_chord_info():
-    genre_chord_info = session.query(Movie.movie_title,\
-                               Genre.genre_name,\
-                               companyname.company_name).filter(\
-                               Movie.movie_id == countryjunct.movie_id).filter(\
-                               Movie.company_id == companyname.company_id).filter(\
-                               Movie.movie_id == mgjunct.movie_id).filter(\
-                               mgjunct.genre_id == Genre.genre_id).filter(\
-                               countryjunct.country_id == country.country_id).\
-                               all()
-
-    session.close()
-    #Create list of movie information
-    genre_chord_list = []
-    for title, genre, company in genre_chord_info:
-        genre_chord_dict = {}
-        genre_chord_dict['title'] = title
-        genre_chord_dict['genre'] = genre
-        genre_chord_dict['company'] = company
-        genre_chord_list.append(genre_chord_dict)
-
-    return jsonify(genre_chord_list)
+    return jsonify(genre_chart_list)
 
 @app.route("/api/v1.0/profit")
 def profit_array():  

@@ -112,19 +112,16 @@ function optionChanged(chosen){
 d3.select('#submit').on('click', optionChanged);
 
 // Code for forming line chart with draggable time scale
-d3.json("/api/v1.0/genre_line", (movieData => {
+d3.json("/api/v1.0/genre_charts", (movieData => {
     let genreObjs = []
     movieData.forEach( d => {
         //create array of objects of movies with revenue values
-        if(d.us_gross && d.ww_gross) {
-            d.us_gross = +d.us_gross.replace(/\D/g,'').trim();
+        if(d.ww_gross) {
             d.ww_gross = +d.ww_gross.replace(/\D/g,'').trim();
             d.year_pub = +d.year_pub;
             let genreObj = {
                     genre: d.genre,
                     year: d.year_pub,
-                    us_gross: d.us_gross,
-                    intl_gross: d.ww_gross - d.us_gross,
                     ww_gross: d.ww_gross
             }
             genreObjs.push(genreObj)
@@ -140,8 +137,6 @@ d3.json("/api/v1.0/genre_line", (movieData => {
         
         if (existing.length) {
         let existingIndex = genreAgg.indexOf(existing[0]);
-        genreAgg[existingIndex].us_gross += item.us_gross;
-        genreAgg[existingIndex].intl_gross += item.intl_gross;
         genreAgg[existingIndex].ww_gross += item.ww_gross;
         } 
         else {
@@ -162,16 +157,12 @@ d3.json("/api/v1.0/genre_line", (movieData => {
         if (exist.length) {
             var existingInd = genreComb.indexOf(exist[0]);
             genreComb[existingInd].year = genreComb[existingInd].year.concat(movie.year);
-            genreComb[existingInd].us_gross = genreComb[existingInd].us_gross.concat(movie.us_gross);
-            genreComb[existingInd].intl_gross = genreComb[existingInd].intl_gross.concat(movie.intl_gross);
             genreComb[existingInd].ww_gross = genreComb[existingInd].ww_gross.concat(movie.ww_gross);
         } 
         else {
             if (typeof movie.genre == 'string')
             genreCombObj.genre = movie.genre;
             genreCombObj.year = [movie.year];
-            genreCombObj.us_gross = [movie.us_gross];
-            genreCombObj.intl_gross = [movie.intl_gross];
             genreCombObj.ww_gross = [movie.ww_gross]
             genreComb.push(genreCombObj)         
         }
@@ -190,7 +181,7 @@ d3.json("/api/v1.0/genre_line", (movieData => {
 
     const layout = {
         title: {
-            text: 'Worldwide Movie Genre Popularity Over the Years',
+            text: 'Worldwide Movie Genre Gross by Year',
             font: {
                 color: 'purple'
             }
@@ -204,12 +195,11 @@ d3.json("/api/v1.0/genre_line", (movieData => {
         }        
     };
 
-    Plotly.newPlot('line1', data, layout);
-}));
+    const config = {responsive: true};
 
-// Code for creating chord diagram
-d3.json("/api/v1.0/genre_chord", (movieData => {
+    Plotly.newPlot('line1', data, layout, config);
 
+    // Code for creating chord diagram
     //creating objects with movie title and list of genres
     let genreCounts = []
     movieData.forEach( d => {
@@ -271,11 +261,11 @@ d3.json("/api/v1.0/genre_chord", (movieData => {
     chart.dataFields.toName = "to";
     chart.dataFields.value = "value";
 
-    let link = chart.links.template;
-    link.fillOpacity = 0.8;
+    var label = chart.nodes.template.label;
+    label.fontSize = 10;
 
-    let label = chart.nodes.template.label;
-    label.fontSize = 11;
+    var link = chart.links.template;
+    link.fillOpacity = 0.7;
     
     // make nodes draggable
     var nodeTemplate = chart.nodes.template;
