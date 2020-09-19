@@ -68,10 +68,11 @@ d3.json("/api/v1.0/movies", function(data) {
         //Check for location
         if(movie.lat && movie.lng){
             const marker = L.marker([movie.lat, movie.lng])
-            .bindPopup("<h5>" + movie.title + 
-            "</h5><hr><p> Year Produced: " + movie.year_pub +
+            .bindPopup("<h6>" + movie.title + 
+            "</h6><hr><p> Year Produced: " + movie.year_pub +
             "</p><hr><p> Company: " + movie.company + 
-            `</p><hr><a href="https://www.imdb.com/title/${movie.movie_id}" target=_blank>Movie on IMDB site</a>`);
+            `</p><hr><a href="https://www.imdb.com/title/${movie.movie_id}" target=_blank>Movie on IMDB site</a>`)
+            .bindTooltip(movie.country).openTooltip();
             markers.addLayer(marker);
         }
     });
@@ -150,7 +151,8 @@ d3.json("/api/v1.0/genre_charts", (movieData => {
         title: {
             text: '<b>Worldwide Movie Genre Gross by Year</b>',
             font: {
-                color: 'purple'
+                color: 'purple',
+                fontSize: 20
             }
         },
         paper_bgcolor: 'rgba(0,0,0,0)',
@@ -233,6 +235,12 @@ d3.json("/api/v1.0/genre_charts", (movieData => {
 
         var link = chart.links.template;
         link.fillOpacity = 0.7;
+
+        var title = chart.titles.create();
+        title.text = "[bold purple]Genre Relationships[/]";
+        title.fontSize = 20;
+        title.marginTop = 30;
+        // title.fill = am4core.color("purple");
     
         // make nodes draggable
         var nodeTemplate = chart.nodes.template;
@@ -286,10 +294,11 @@ function optionChanged(chosen){
             //Check for location
             if(movie.lat && movie.lng){
                 const marker = L.marker([movie.lat, movie.lng])
-                .bindPopup("<h5>" + movie.title + 
-                "</h5><hr><p> Year Produced: " + movie.year_pub +
+                .bindPopup("<h6>" + movie.title + 
+                "</h6><hr><p> Year Produced: " + movie.year_pub +
                 "</p><hr><p> Company: " + movie.company + 
-                `</p><hr><a href="https://www.imdb.com/title/${movie.movie_id}" target=_blank>Movie on IMDB site</a>`);
+                `</p><hr><a href="https://www.imdb.com/title/${movie.movie_id}" target=_blank>Movie on IMDB site</a>`)
+                .bindTooltip(movie.country).openTooltip();
                 markers.addLayer(marker);
             }
         });
@@ -371,7 +380,8 @@ function optionChanged(chosen){
                 title: {
                     text: `<b>Worldwide Movie ${chosen} Gross by Year</b>`,
                     font: {
-                        color: 'purple'
+                        color: 'purple',
+                        fontSize: 20
                     }
                 },
                 paper_bgcolor: 'rgba(0,0,0,0)',
