@@ -6,7 +6,7 @@ let imagesLoaded = 0;
 let totalImages = 0;
 let photosArray = [];
 
-// Unsplash API
+// Count
 const count = 30;
 // const apiKey = 'YOUR_API_KEY_HERE';
 const apiUrl = `/api/v1.0/profit_movies`;
@@ -28,45 +28,90 @@ function setAttributes(element, attributes) {
 }
 
 // Create Elements For Links & Photos, Add to DOM
-function displayPhotos(photoData) {
+function displayPhotos(displayData) {
     imagesLoaded = 0;
-    totalImages = photoData.length;
+    totalImages = displayData.length;
 
-    console.log(`totalImages`);
-    console.log(totalImages);
+    // console.log(`totalImages`);
+    // console.log(totalImages);
+    // console.log(`displayData`);
+    // console.log(displayData);
+
+    // The currency formatter
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+      });
 
     // Run function for each object in photosArray
-    photoData.forEach((photo) => {
-        console.log(`Inside the loop`);
-        console.log(photo);
+    displayData.forEach((photo) => {
+
+        // Formatting the monies
+        theProfit = formatter.format(photo.profit);
+        theBudget = formatter.format(photo.budget);
+        
+        // Create <div> with class = "img-container"
+        const imageDiv = document.createElement('div');
+        setAttributes(imageDiv, {
+            class: 'img-container',
+        });
+
+        // Create text block for image
+        const textBlockDiv = document.createElement('div');
+        setAttributes(textBlockDiv, {
+            class: 'text-block',
+        });
+        const para = document.createElement("P");
+        para.innerHTML = `Year: ${photo.year_pub}<br>Profit: ${theProfit}<br>Budget: ${theBudget}<br>Duration: ${photo.duration}`;
+        textBlockDiv.appendChild(para);
+
+        // Description block
+        const descriptionBlockDiv = document.createElement('div');
+        setAttributes(descriptionBlockDiv, {
+            class: 'description-block lead',
+        });
+        const paraDescription = document.createElement("P");
+        paraDescription.innerHTML = photo.description;
+        descriptionBlockDiv.appendChild(paraDescription);
+
         // Create <a> to link to full photo
-        href_url = `https://www.imdb.com/title/${photo.movie_id}/`
-        const item = document.createElement('a');
-        setAttributes(item, {
+        const href_url = `https://www.imdb.com/title/${photo.movie_id}/`;
+        const aTag = document.createElement('a');
+        setAttributes(aTag, {
             href: href_url,
             target: '_blank',
         });
+
         // Create <img> for photo
         const img = document.createElement('img');
         setAttributes(img, {
             src: photo.poster_url,
             alt: photo.title,
-            title: `Profit: $${photo.profit}`,
+            title: photo.title,
         });
+
         // Event Listener, check when each is finished loading
         img.addEventListener('load', imageLoaded);
-        // Put <img> inside <a>, then put both inside imageContainer Element
-        item.appendChild(img);
-        imageContainer.appendChild(item);
+
+        // Put <img> inside aTag, then put both inside imageContainer
+        aTag.appendChild(img);
+
+        // Put <img> and textBlockDiv inside imageDiv
+        imageDiv.appendChild(aTag);
+        imageDiv.appendChild(textBlockDiv);
+        imageDiv.appendChild(descriptionBlockDiv);
+
+        // Then put imageDiv inside imageContainer
+        imageContainer.appendChild(imageDiv);
     });
 }
-
 
 // =================================================================
 //       Set up the HTML dropdown QUERY SECTION dynamically
 // =================================================================
 function optionsHTML(theChoice, choiceArray) {
-  console.log(theChoice);
+  d3.select("form").selectAll("div").remove();
   let div = d3.select("form").append("div");
   let theLabel = div.append("label")
                     .attr("for", "select"+theChoice)
@@ -96,72 +141,71 @@ function movieDataYear(theYear, theKeysArray, nested_data) {
   return targeted_data;
 };
 
-// Create the function to run for both events
-function runEnter() {
-  // Prevent the page from refreshing
-  d3.event.preventDefault();
-
-  // Select the input elements and get the raw HTML node
-  let inputYear = d3.select("#selectYear");
-
-  // Get the value property of the input elements
-  let inputValueYear = inputYear.property("value");
-
-  // Print the selected input values to the console
-  console.log(`The query Year: ${inputValueYear}`);
-
-  // Get the data for the selected year.
-  let selectedData = movieDataYear(inputValueYear, theKeysYear, nested_data_year);
-  console.log("selectedData");
-  console.log(selectedData);
-
-  // Remove all previous images
-  d3.select("#image-container").selectAll('a').remove();
-
-
-  // render the photos
-  displayPhotos(selectedData);
-};
-
 // Get photos from Heroku Database
 async function getPhotos() {
-    try {
-      const response = await fetch(apiUrl);
-      const myData = await response.json();
-      const myData_sorted = myData.sort((a,b) => b.profit - a.profit);
-      // Choose first 300.
-      photosArray = myData_sorted.slice(0, 300);
+  try {
+        const response = await fetch(apiUrl);
+        const myData = await response.json();
+        const myData_sorted = myData.sort((a,b) => b.profit - a.profit);
+        // Choose first 300.
+        photosArray = myData_sorted.slice(0, 300);
         
-      console.log("photosArray");
-      console.log(photosArray);
-      displayPhotos(photosArray);
+        displayPhotos(photosArray);
 
-      // Using d3.nest()
-      var nested_data_year = d3.nest()
+        // Using d3.nest()
+        var nested_data_year = d3.nest()
                 .key(d => d.year_pub).sortKeys(d3.ascending)
                 .entries(myData_sorted);
 
-      console.log("nested_data_year");
-      console.log(nested_data_year);
+        // console.log("nested_data_year");
+        // console.log(nested_data_year);
 
-      theKeysYear = nested_data_year.map(d => d.key);
+        theKeysYear = nested_data_year.map(d => d.key);
 
-      // Create the DropDown for year.
-      optionsHTML("Year", theKeysYear);
+        // Create the DropDown for year.
+        optionsHTML("Year", theKeysYear);
 
-      // Select the button
-      var button = d3.select("#filter-btn");
+        // Select the button
+        var button = d3.select("#filter-btn");
 
-      // Select the form
-      var form = d3.select("form");
+        // Select the form
+        var form = d3.select("form");
 
-      // Create event handlers for clicking the button or pressing the enter key
-      button.on("click", runEnter());
-      form.on("submit",runEnter());
+        // Create event handlers for clicking the button or pressing the enter key
+        button.on("click", runEnter);
+        form.on("submit",runEnter);
+
+        // Create the function to run for both events
+        function runEnter() {
+        // Prevent the page from refreshing
+        d3.event.preventDefault();
+
+        // Select the input elements and get the raw HTML node
+        let inputYear = d3.select("#selectYear");
+
+        // Get the value property of the input elements
+        let inputValueYear = inputYear.property("value");
+
+        // Print the selected input values to the console
+        console.log(`The query Year: ${inputValueYear}`);
+
+        // Get the data for the selected year.
+        let selectedData = movieDataYear(inputValueYear, theKeysYear, nested_data_year);
+        console.log("selectedData");
+        console.log(selectedData);
+
+        // Remove all previous images
+        d3.select("#image-container").selectAll('div').remove();
+
+        // render the photos
+        displayPhotos(selectedData);
+        };
 
     } catch (error) {
-        // Catch Error Here
-    }
+            // Catch error
+            console.log(`There is an error.`);
+            console.log(error);
+        };
 }
 
 // Check to see if scrolling near bottom of page, Load More Photos

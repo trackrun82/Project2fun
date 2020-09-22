@@ -1,7 +1,7 @@
 // Code for creating genre drop-down for map
 d3.json("/api/v1.0/genre_names", function(data) {
     // form array of unique genres
-    var genres = data.map(genres => genres.genre)
+    var genres = data.map(genres => genres.genre).sort()
     var uniqueGenres = genres.filter((x, ind, arr) => arr.indexOf(x) === ind)
     
     // Append genres to dropdown
@@ -151,7 +151,7 @@ d3.json("/api/v1.0/genre_charts", (movieData => {
         title: {
             text: '<b>Worldwide Movie Genre Gross by Year</b>',
             font: {
-                color: 'purple',
+                color: '#343A40',
                 fontSize: 20
             }
         },
@@ -237,10 +237,9 @@ d3.json("/api/v1.0/genre_charts", (movieData => {
         link.fillOpacity = 0.7;
 
         var title = chart.titles.create();
-        title.text = "[bold purple]Genre Relationships[/]";
+        title.text = "[bold #343A40]Genre Relationships[/]";
         title.fontSize = 20;
         title.marginTop = 30;
-        // title.fill = am4core.color("purple");
     
         // make nodes draggable
         var nodeTemplate = chart.nodes.template;
@@ -378,9 +377,9 @@ function optionChanged(chosen){
 
             const layout2 = {
                 title: {
-                    text: `<b>Worldwide Movie ${chosen} Gross by Year</b>`,
+                    text: `<b>Worldwide Movie - ${chosen} Gross by Year</b>`,
                     font: {
-                        color: 'purple',
+                        color: '#343A40',
                         fontSize: 20
                     }
                 },

@@ -52,13 +52,12 @@ def show_apis():
     """List all available api routes."""
     return (
         f"<h4>Available Routes:</h4>"
-        f'<a href="/api/v1.0/movies">/api/v1.0/movies</a><br/>'
-        f'<a href="/api/v1.0/posters">/api/v1.0/posters</a><br/>'     
+        f'<a href="/api/v1.0/movies">/api/v1.0/movies</a><br/>'    
         f'<a href="/api/v1.0/genre_names">/api/v1.0/genre_names</a><br/>' 
         f'<a href="/api/v1.0/genre_map">/api/v1.0/genre_map</a><br/>' 
         f'<a href="/api/v1.0/genre_charts">/api/v1.0/genre_charts</a><br/>'
-        f'<a href="/api/v1.0/profit">/api/v1.0/profit</a><br/>'
-        f'<a href="/api/v1.0/profit_genre">/api/v1.0/profit_genre</a><br/>'
+        f'<a href="/api/v1.0/posters">/api/v1.0/posters</a><br/>'
+        f'<a href="/api/v1.0/profit_movies">/api/v1.0/profit_movies</a><br/>'
         f'<a href="/"><h4>Back</h4></a><br/>' 
     )   
 
@@ -88,32 +87,10 @@ def movie_info():
 
     return jsonify(movie_list)
 
-@app.route("/api/v1.0/posters")
-def poster():
-    # Query the Heroku Postgres Database for poster url
-    poster_query_stmt = session.query(Poster).statement
-    poster_df = pd.read_sql_query(poster_query_stmt, session.bind)
-    
-    # Iterate through the poster_df to create a list of dictionaries (array of objects) for each row
-    poster_list = []
-    
-    for index, row in poster_df.iterrows(): 
-        # Poster dict
-        movie_id = row["movie_id"]
-        poster_url = row["poster_url"]
-
-        row_profit = {
-            "movie_id": movie_id,
-            "poster_url": poster_url,
-
-        }
-        poster_list.append(row_profit)
-      
-    return jsonify(poster_list)
-
 @app.route("/api/v1.0/genre_names")
 def genre_names():
-    genre_names = session.query(Genre.genre_name).all()
+    genre_names = session.query(Genre.genre_name).filter(\
+                               Genre.genre_name.isnot(None)).all()
 
     session.close()
     #Create list of movie information
@@ -178,63 +155,67 @@ def genre_chart_info():
 
     return jsonify(genre_chart_list)
 
-@app.route("/api/v1.0/profit")
-def profit_array():  
-    # Query the Heroku Postgres Database to DataFrame for the profit table
-    profit_query_stmt = session.query(Profit).statement
-    profit_df = pd.read_sql_query(profit_query_stmt, session.bind)
-
-    # Iterate through the profit_tb_df to create a list of dictionaries (array of objects) for each row
-    profit_list = []
-
-    for index, row in profit_df.iterrows():
-
-        # Profit dict
+@app.route("/api/v1.0/posters")
+def poster():
+    # Query the Heroku Postgres Database for poster url
+    poster_query_stmt = session.query(Poster).statement
+    poster_df = pd.read_sql_query(poster_query_stmt, session.bind)
+    
+    # Iterate through the poster_df to create a list of dictionaries (array of objects) for each row
+    poster_list = []
+    
+    for index, row in poster_df.iterrows(): 
+        # Poster dict
         movie_id = row["movie_id"]
-        budget = row["budget"]
-        revenue = row["revenue"]
-        profit = row["profit"]
+        poster_url = row["poster_url"]
 
         row_profit = {
-                  "movie_id": movie_id,
-                  "budget": budget,
-                  "revenue": revenue,
-                  "profit": profit
-                 }
-        profit_list.append(row_profit)
+            "movie_id": movie_id,
+            "poster_url": poster_url,
 
-    return jsonify(profit_list)
+        }
+        poster_list.append(row_profit)
+      
+    return jsonify(poster_list)
 
-
-@app.route("/api/v1.0/profit_genre")
-def profit_genre():  
+@app.route("/api/v1.0/profit_movies")
+def profit_route():  
     # Query the Heroku Postgres Database to DataFrame and JOIN appropriate tables
-    query1 = session.query(mgjunct.movie_id, Genre.genre_name, Profit.budget, Profit.revenue, Profit.profit)
-    query2 = query1.join(Profit, mgjunct.movie_id == Profit.movie_id)
-    query_stmt = query2.join(Genre, mgjunct.genre_id == Genre.genre_id).statement
-    profit_genre_df = pd.read_sql_query(query_stmt, session.bind)
+    profit_query_1 = session.query(Profit.movie_id, Profit.budget, Profit.revenue, Profit.profit, Movie.movie_title,\
+                          Movie.year_published, Movie.description, Movie.movie_duration, Poster.poster_url)
+    profit_query_2 = profit_query_1.join(Movie, Profit.movie_id == Movie.movie_id)
+    profit_query_stmt = profit_query_2.join(Poster, Profit.movie_id == Poster.movie_id).statement
+    profit_movies_df = pd.read_sql_query(profit_query_stmt, session.bind)
+
+    # Iterate through the profit_movies_df to create a list of dictionaries (array of objects) for each row
+    profit_movies_list = []
     
-    # Iterate through the profit_genre_df to create a list of dictionaries (array of objects) for each row
-    profit_genre_list = []
-    
-    for index, row in profit_genre_df.iterrows():
+    for index, row in profit_movies_df.iterrows():
 
         # Profit dict
         movie_id = row["movie_id"]
-        genre_name = row["genre_name"]
+        movie_title = row["movie_title"]
+        year_published = row["year_published"]
+        movie_duration = row["movie_duration"]
+        description = row["description"]
         budget = row["budget"]
         revenue = row["revenue"]
         profit = row["profit"]
+        poster_url = row["poster_url"]
 
-        row_profit_genre = {"movie_id": movie_id,
-                            "genre_name": genre_name,
+        row_profit_movies = {"movie_id": movie_id,
+                            "title": movie_title,
+                            "year_pub": year_published,
+                            "duration": movie_duration,
+                            "description": description,
                             "budget": budget,
                             "revenue": revenue,
-                            "profit": profit
+                            "profit": profit,
+                            "poster_url": poster_url
                  }
-        profit_genre_list.append(row_profit_genre)
+        profit_movies_list.append(row_profit_movies)
       
-    return jsonify(profit_genre_list)
+    return jsonify(profit_movies_list)
 
 if __name__ == "__main__":   
     app.run(debug=True)
