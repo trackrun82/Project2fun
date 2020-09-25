@@ -17,7 +17,7 @@ const darkmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/
     attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
     maxZoom: 18,
     id: "dark-v10",
-    accessToken: api_key
+    accessToken: API_KEY
 });
 
 // Create the light tile layer
@@ -25,7 +25,7 @@ const lightmap = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     maxZoom: 18,
     id: 'mapbox/light-v10',
-    accessToken: api_key
+    accessToken: API_KEY
 });
 
 // Initialize all of the LayerGroups we'll be using
