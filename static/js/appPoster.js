@@ -136,7 +136,7 @@ function movieDataYear(theYear, theKeysArray, nested_data) {
   console.log(`Data for ${theYear}`);
   targeted_data = nested_data[theKeysArray.indexOf(theYear)].values;
   
-  console.log(targeted_data);
+  // console.log(targeted_data);
 
   return targeted_data;
 };
@@ -191,8 +191,8 @@ async function getPhotos() {
 
         // Get the data for the selected year.
         let selectedData = movieDataYear(inputValueYear, theKeysYear, nested_data_year);
-        console.log("selectedData");
-        console.log(selectedData);
+        // console.log("selectedData");
+        // console.log(selectedData);
 
         // Remove all previous images
         d3.select("#image-container").selectAll('div').remove();

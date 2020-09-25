@@ -29,24 +29,24 @@ body {
   border-radius: 8px;
 }
 
+.charts {
+  border: 3px solid #f8bf21;
+  border-radius: 8px;
+}
+
 #chartdiv {
   width: 100%;
   height: 465px;
-  border: 3px solid #f8bf21;
-  border-radius: 8px;
 }
 
 #line1 {
   width: 100%;
   height: 465px;
-  border: 3px solid #f8bf21;
-  border-radius: 8px;
 }
 
 h3 {
   color: #343A40;
   font-weight: bold;
-  font-size: 20;
 }
 
 h4 {
@@ -78,6 +78,7 @@ p {
   overflow: hidden;
   overflow-y: scroll;
   border: 3px solid #f8bf21;
+  border-radius: 8px;
   font-family: Bebas Neue, sans-serif;
 }
 
@@ -204,11 +205,21 @@ select {
 
 /* Media Query: Large Smartphone Vertical */
 @media screen and (max-width: 600px) {
-  h1 {
+  body {
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+  
+  /* h1 {
+    font-size: 15px;
+  } */
+
+  h3 {
     font-size: 20px;
   }
 
-  h1.poster {
+  .poster {
+    font-size: 20px;
     margin-top: 0px;
   }
 
@@ -217,8 +228,8 @@ select {
   }
 
   .filters {
-    margin-top: 25px;
-    padding-top: 25px;
+    margin-top: 30px;
+    padding-top: 30px;
     position: sticky;
     top: 50%;
     -webkit-transform: translateY(-50%);
